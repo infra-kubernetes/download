@@ -25,8 +25,10 @@ jobs:
       - name: set up int shell
         run: |
           make init
+          git status
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v6
+        version: "~> v2"
         with:
           args: release --clean
         env:
