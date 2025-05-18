@@ -111,25 +111,25 @@ func downloadPackages() {
 	}
 	if err := exec.ExecShellForAny()([]any{
 		exec.Logger("sealos login " + registryDomain),
-		exec.SecretShell(fmt.Sprintf("files/sealos login -u %s -p %s %s", registryUserName, registryPassword, registryDomain)),
+		exec.SecretShell(fmt.Sprintf("sudo files/sealos login -u %s -p %s %s", registryUserName, registryPassword, registryDomain)),
 	}); err != nil {
 		logger.Fatal("sealos login error %s", err)
 		return
 	}
 	for _, line := range lines {
 		logger.Info("pull image: %s", line)
-		err := exec.RunCommand(fmt.Sprintf("files/sealos pull --policy=always %s", line))
+		err := exec.RunCommand(fmt.Sprintf("sudo files/sealos pull --policy=always %s", line))
 		if err != nil {
 			logger.Painc("pull image %s error %s", line, err)
 			continue
 		}
 		//save tar
 		tarName := processImage2TarName(line)
-		if err = exec.RunCommand(fmt.Sprintf("files/sealos save -o  %s/%s.tar %s", downloadPath, tarName, line)); err != nil {
+		if err = exec.RunCommand(fmt.Sprintf("sudo files/sealos save -o  %s/%s.tar %s", downloadPath, tarName, line)); err != nil {
 			logger.Painc("save image %s error: %s", line, err)
 		}
 	}
-	_ = exec.RunCommand("files/sealos rmi `files/sealos images -aq `")
+	_ = exec.RunCommand("sudo files/sealos rmi `sudo files/sealos images -aq `")
 	logger.Info("download package [%d] success, path is %s", len(lines), downloadPath)
 }
 
