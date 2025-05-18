@@ -100,7 +100,7 @@ func extraPackages() {
 	if !file.IsExist(fname) {
 		logger.Fatal("sealos package %s not exist", fname)
 	}
-	if err := exec.RunCommand(fmt.Sprintf("tar -xvf %s sealos && mv sealos files/ && chmod a+x files/sealos", fname)); err != nil {
+	if err := exec.RunCommand(fmt.Sprintf("tar -xvf %s sealos && mv sealos files/ && sudo chmod a+x files/sealos", fname)); err != nil {
 		logger.Fatal("unzip %s error %s", fname, err)
 	}
 }
