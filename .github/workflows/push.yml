@@ -1,0 +1,45 @@
+name: 🔍 Go for Build
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  job0:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Prepare
+        id: prepare
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo ::set-output name=tag_name::${TAG}
+      - name: set up int shell
+        run: |
+          make init
+          go run builtin/main.go
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          args: --clean --snapshot
+        env:
+          USERNAME: ${{ github.repository_owner }}
+      - name: Test
+        run: |
+          dist/download_linux_amd64_v1/download -v
+          echo "ghcr.io/infra-kubernetes/kubernetes:v1.28-5.0.0" > image.txt
+          dist/download_linux_amd64_v1/download -c -d /tmp/test-download -f image.txt -p ${{ secrets.GH_TOKEN }}
+      - name: Save Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: install
+          path: dist/*.tar.gz

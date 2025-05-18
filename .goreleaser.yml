@@ -1,0 +1,53 @@
+project_name: download
+#gomod:
+#  # Proxy a module from proxy.golang.org, making the builds verifiable.
+#  # This will only be effective if running against a tag. Snapshots will ignore this setting.
+#  # Notice: for this to work your `build.main` must be a package, not a `.go` file.
+#  #
+#  # Default is false.
+#  proxy: true
+#
+#  # If proxy is true, use these environment variables when running `go mod` commands (namely, `go mod tidy`).
+#  # Defaults to `os.Environ()`.
+#  env:
+#    - GOPROXY=https://goproxy.cn
+builds:
+  - binary: download
+    id: download
+    goos:
+      - linux
+    env:
+      - CGO_ENABLED=0
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -X github.com/infra-kubernetes/download/pkg/version.gitVersion={{.Version}}
+      - -X github.com/infra-kubernetes/download/pkg/version.gitCommit={{.ShortCommit}}
+      - -X github.com/infra-kubernetes/download/pkg/version.buildDate={{.Date}}
+    overrides:
+      - goos: linux
+        goarch: amd64
+        goamd64: "v1"
+        goarm: ""
+        gomips: ""
+archives:
+  - id: archive
+    format: tar.gz
+    files:
+      - src: files
+        dst: files
+        info:
+          owner: root
+          group: root
+          mode: 0755
+release:
+  prerelease: auto
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+  algorithm: sha256
+  ids:
+    - archive
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
