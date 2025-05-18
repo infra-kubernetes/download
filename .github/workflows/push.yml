@@ -25,7 +25,6 @@ jobs:
       - name: set up int shell
         run: |
           make init
-          go run builtin/main.go
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3
