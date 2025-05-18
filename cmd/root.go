@@ -45,6 +45,7 @@ var rootCmd = &cobra.Command{
 			file.CleanDir(downloadPath)
 		}
 		_ = file.MkDirs(downloadPath)
+		extraPackages()
 		downloadPackages()
 	},
 	PreRun: func(cmd *cobra.Command, args []string) {
