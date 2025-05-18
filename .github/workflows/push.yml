@@ -35,6 +35,8 @@ jobs:
       - name: Test
         run: |
           dist/download_linux_amd64_v1/download -v
+          mkdir -p download_linux_amd64_v1/files
+          cp -rf files/* download_linux_amd64_v1/files/
           echo "ghcr.io/infra-kubernetes/kubernetes:v1.28-5.0.0" > image.txt
           dist/download_linux_amd64_v1/download -c -d /tmp/test-download -f image.txt -p ${{ secrets.GH_TOKEN }}
       - name: Save Binaries
