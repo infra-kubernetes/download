@@ -27,8 +27,7 @@ jobs:
           make init
           git status
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
-        version: "~> v2"
+        uses: goreleaser/goreleaser-action@v3
         with:
           args: release --clean
         env:
