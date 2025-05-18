@@ -132,6 +132,7 @@ func downloadPackages() {
 		}
 	}
 	_ = exec.RunCommand("sudo files/sealos rmi `sudo files/sealos images -aq `")
+	_ = exec.RunCommand("sudo files/sealos logout " + registryDomain)
 	logger.Info("download package [%d] success, path is %s", len(lines), downloadPath)
 }
 
