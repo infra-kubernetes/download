@@ -32,6 +32,7 @@ var downloadPath string
 var cleanup bool
 var downloadTxt string
 var registryPassword, registryUserName, registryDomain string
+var debug bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -82,7 +83,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	cobra.OnInitialize(func() {
-		logger.Cfg(true, false)
+		logger.Cfg(debug, false)
 	})
 
 	rootCmd.PersistentFlags().StringVarP(&downloadPath, "download-path", "d", "/tmp/images", "download path")
@@ -91,6 +92,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&registryUserName, "registry-username", "u", "cuisongliu", "registry username")
 	rootCmd.PersistentFlags().StringVarP(&registryPassword, "registry-password", "p", "", "registry password")
 	rootCmd.PersistentFlags().StringVarP(&registryDomain, "registry-domain", "r", "ghcr.io", "registry domain")
+	rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "debug mode")
 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.install.yaml)")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
