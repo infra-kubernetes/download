@@ -127,7 +127,7 @@ func downloadPackages() {
 		}
 		//save tar
 		tarName := processImage2TarName(line)
-		if err = exec.RunCommand(fmt.Sprintf("sudo files/sealos save -o  %s/%s.tar %s", downloadPath, tarName, line)); err != nil {
+		if err = exec.RunCommand(fmt.Sprintf("sudo files/sealos save -o  %s/%s %s", downloadPath, tarName, line)); err != nil {
 			logger.Painc("save image %s error: %s", line, err)
 		}
 	}
